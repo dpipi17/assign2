@@ -40,11 +40,30 @@ public class Piece {
 		
 		for(int i = 0; i < points.length; i++) {
 			TPoint currPt = points[i];
+			// gets width and height of piece
+			width = Math.max(width, currPt.x + 1);
+			height = Math.max(height, currPt.y + 1);
+					
 			TPoint newPt = new TPoint(currPt.x, currPt.y);
 			body[i] = newPt;
 		}
+		
+		makeSkArr();
 	}
 	
+	// finds minimum y values for every x coordinate
+	private void makeSkArr() {	
+		for(int x = 0; x < getWidth(); x++) {
+			int currY = Integer.MAX_VALUE;
+			
+			for(int i = 0; i < body.length; i++) {
+				if(body[i].x == x) {
+					currY = Math.min(currY, body[i].y);
+				}
+			}	
+			skirt[x] = currY;
+		}
+	}
 
 	
 	
@@ -95,7 +114,22 @@ public class Piece {
 	 rotated from the receiver.
 	 */
 	public Piece computeNextRotation() {
-		return null; // YOUR CODE HERE
+		/*List<TPoint> newPts = new ArrayList<TPoint>();
+		
+		for(int i = 0; i < body.length; i++) {
+			TPoint currPt = body[i];
+			int newX = getHeight() - currPt.y - 1;
+			int newY = currPt.x;
+			
+			TPoint newPt = new TPoint(newX, newY);
+			newPts.add(newPt);
+		}
+		
+		TPoint[] array = newPts.toArray(new TPoint[0]);
+		Piece next = new Piece(array);
+		this.next = next;*/
+		
+		return next; // YOUR CODE HERE
 	}
 
 	/**
@@ -223,6 +257,8 @@ public class Piece {
 		TPoint[] array = points.toArray(new TPoint[0]);
 		return array;
 	}
+	
+	
 
 	
 

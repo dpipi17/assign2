@@ -23,7 +23,6 @@ public class PieceTest {
 	private Piece l2_1, l2_2, l2_3, l2_4;
 	private Piece sq;
 	private Piece st1, st2;
-	//private Piece s, sRotated;
 
 	@Before
 	public void setUp() throws Exception {
@@ -52,9 +51,8 @@ public class PieceTest {
 		s2_1 = new Piece(Piece.S2_STR);
 		s2_2 = s2_1.computeNextRotation();
 		
-		sq = new Piece(Piece.SQUARE_STR);
-		//s = new Piece(Piece.S1_STR);
-		//sRotated = s.computeNextRotation();
+		sq = new Piece(Piece.SQUARE_STR); 
+
 	}
 	
 	// Here are some sample tests to get you started
@@ -64,6 +62,7 @@ public class PieceTest {
 		// Check size of pyr piece
 		assertEquals(3, pyr1.getWidth());
 		assertEquals(2, pyr1.getHeight());
+	
 		
 		// Now try after rotation
 		// Effectively we're testing size and rotation code here
