@@ -35,7 +35,14 @@ public class Piece {
 	 Makes its own copy of the array and the TPoints inside it.
 	*/
 	public Piece(TPoint[] points) {
-		// YOUR CODE HERE
+		// YOUR CODE HERE 
+		body = new TPoint[points.length];
+		
+		for(int i = 0; i < points.length; i++) {
+			TPoint currPt = points[i];
+			TPoint newPt = new TPoint(currPt.x, currPt.y);
+			body[i] = newPt;
+		}
 	}
 	
 
