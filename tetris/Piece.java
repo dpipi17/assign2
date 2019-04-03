@@ -35,7 +35,6 @@ public class Piece {
 	 Makes its own copy of the array and the TPoints inside it.
 	*/
 	public Piece(TPoint[] points) {
-		// YOUR CODE HERE 
 		body = new TPoint[points.length];
 		
 		for(int i = 0; i < points.length; i++) {
@@ -130,7 +129,7 @@ public class Piece {
 		Piece next = new Piece(array);
 		this.next = next;
 		
-		return next; // YOUR CODE HERE
+		return next;
 	}
 
 	/**
@@ -161,8 +160,23 @@ public class Piece {
 		// (null will be false)
 		if (!(obj instanceof Piece)) return false;
 		Piece other = (Piece)obj;
+		TPoint[] otherBody = other.getBody();
 		
-		// YOUR CODE HERE
+		if(otherBody.length != body.length) return false;
+		
+		for(int i = 0; i < otherBody.length; i++) {
+			boolean found = false;
+			TPoint currPt = otherBody[i];
+			
+			for(int j = 0; j < body.length; j++) {
+				if(body[j].equals(currPt)) {
+					found = true;
+				}
+			}
+			
+			if(!found) return false;
+		}
+	
 		return true;
 	}
 
@@ -229,7 +243,13 @@ public class Piece {
 	 to the first piece.
 	*/
 	private static Piece makeFastRotations(Piece root) {
-		return null; // YOUR CODE HERE
+		Piece currPc = new Piece(root.getBody());
+		while(!root.equals(currPc.computeNextRotation())) {
+			currPc = currPc.fastRotation();
+		}
+		currPc = currPc.fastRotation();
+		
+		return currPc; 
 	}
 	
 	
