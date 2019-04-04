@@ -154,7 +154,7 @@ public class Piece {
 	public boolean equals(Object obj) {
 		// standard equals() technique 1
 		if (obj == this) return true;
-		
+		 
 		// standard equals() technique 2
 		// (null will be false)
 		if (!(obj instanceof Piece)) return false;

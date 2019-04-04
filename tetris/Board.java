@@ -1,6 +1,8 @@
 // Board.java
 package tetris;
 
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+
 /**
  CS108 Tetris Board.
  Represents a Tetris board -- essentially a 2-d grid
@@ -16,6 +18,14 @@ public class Board	{
 	private boolean[][] grid;
 	private boolean DEBUG = true;
 	boolean committed;
+	private int [] widths;
+	private int [] heights;
+	private int maxHeight;
+	
+	private boolean[][] undo_grid;
+	private int [] undo_widths;
+	private int [] undo_heights;
+	private int undo_maxHeight;
 	
 	
 	// Here a few trivial methods are provided:
@@ -28,9 +38,17 @@ public class Board	{
 		this.width = width;
 		this.height = height;
 		grid = new boolean[width][height];
+		undo_grid = new boolean[width][height];
 		committed = true;
 		
 		// YOUR CODE HERE
+		widths = new int[height];
+		undo_widths = new int[height];
+		
+		heights = new int[width];
+		undo_heights = new int[width];
+		maxHeight = 0;
+		undo_maxHeight = 0;
 	}
 	
 	
@@ -54,8 +72,8 @@ public class Board	{
 	 Returns the max column height present in the board.
 	 For an empty board this is 0.
 	*/
-	public int getMaxHeight() {	 
-		return 0; // YOUR CODE HERE
+	public int getMaxHeight() {
+		return maxHeight;
 	}
 	
 	
@@ -89,7 +107,7 @@ public class Board	{
 	 The height is 0 if the column contains no blocks.
 	*/
 	public int getColumnHeight(int x) {
-		return 0; // YOUR CODE HERE
+		return heights[x];
 	}
 	
 	
@@ -98,9 +116,13 @@ public class Board	{
 	 the given row.
 	*/
 	public int getRowWidth(int y) {
-		 return 0; // YOUR CODE HERE
+		 return widths[y];
 	}
 	
+	// returns true if the invalid width/height area
+	private boolean outOfBounds(int x, int y) {
+		return (x >= width || x < 0 || y >= height || y < 0);
+	}
 	
 	/**
 	 Returns true if the given block is filled in the board.
@@ -108,7 +130,9 @@ public class Board	{
 	 always return true.
 	*/
 	public boolean getGrid(int x, int y) {
-		return false; // YOUR CODE HERE
+		if(outOfBounds(x,y)) return true;
+		
+		return grid[x][y]; 
 	}
 	
 	
@@ -136,12 +160,50 @@ public class Board	{
 		if (!committed) throw new RuntimeException("place commit problem");
 			
 		int result = PLACE_OK;
+		committed = false;
+		backUp();
 		
-		// YOUR CODE HERE
+		TPoint [] body = piece.getBody();
+		for(int i = 0; i < body.length; i++) {
+			TPoint currPt = body[i];
+			int newX = x + currPt.x;
+			int newY = y + currPt.y;
+			
+			if(outOfBounds(newX, newY)) {
+				return PLACE_OUT_BOUNDS;
+			}
+			
+			if(getGrid(newX, newY)) {
+				return PLACE_BAD;
+			}
+			
+			grid[newX][newY] = true;
+			heights[newX] = Math.max(getColumnHeight(newX), newY + 1);
+			
+			maxHeight = Math.max(maxHeight, getColumnHeight(newX));
+			
+			widths[newY]++;
+			if(getRowWidth(newY) == getWidth()) {
+				result = PLACE_ROW_FILLED;
+			}
+		}
 		
+		sanityCheck();
 		return result;
 	}
 	
+	
+	// method to backUp arrays for undo operation
+	private void backUp() {
+		System.arraycopy(widths, 0, undo_widths, 0, widths.length);
+		System.arraycopy(heights, 0, undo_heights, 0, heights.length);
+		undo_maxHeight = maxHeight;
+		
+		for(int i = 0; i < grid.length; i++) {
+			System.arraycopy(grid[i], 0, undo_grid[i], 0, grid[i].length);
+		}
+		
+	}
 	
 	/**
 	 Deletes rows that are filled all the way across, moving
@@ -164,7 +226,24 @@ public class Board	{
 	 See the overview docs.
 	*/
 	public void undo() {
-		// YOUR CODE HERE
+		// if commited is true, it is second commit, and method should do nothing.
+		if(!committed) {
+			maxHeight = undo_maxHeight;
+			
+			int [] tmp_widths = widths;
+			widths = undo_widths;
+			undo_widths = tmp_widths;
+			
+			int [] tmp_heights = heights;
+			heights = undo_heights;
+			undo_heights = tmp_heights;
+			
+			boolean [][] tmp_grid = grid;
+			grid = undo_grid;
+			undo_grid = tmp_grid;
+			commit();
+		}
+		sanityCheck();
 	}
 	
 	
