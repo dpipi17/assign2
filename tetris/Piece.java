@@ -249,16 +249,15 @@ public class Piece {
 	*/
 	private static Piece makeFastRotations(Piece root) {
 		Piece currPc = root.computeNextRotation();
-		if(currPc.equals(root)) {
-			root.next = root;
-		} else {
-			root.next = currPc;			
-		}
+		root.next = currPc;			
 		
-		while(!root.equals(currPc)) {
+		
+		while(!currPc.computeNextRotation().equals(root)) {
 			currPc.next = currPc.computeNextRotation();
 			currPc = currPc.next;
 		}
+		currPc.next = root;
+		
 		
 		return root; 
 	}

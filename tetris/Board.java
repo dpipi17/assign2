@@ -1,6 +1,8 @@
 // Board.java
 package tetris;
 
+import java.util.Arrays;
+
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 /**
@@ -83,8 +85,44 @@ public class Board	{
 	*/
 	public void sanityCheck() {
 		if (DEBUG) {
-			// YOUR CODE HERE
-		}
+			int realMaxHeight = 0;
+			int [] realHeights = new int[width];
+			int [] realWidths = new int[height];
+			
+			// finds Real heights array
+			for(int i = 0; i < getWidth(); i++) {
+				for(int j = getHeight() - 1; j >= 0; j--) {
+					if(grid[i][j]) {
+						realHeights[i] = j + 1;
+						break;
+					}
+				}
+			}
+			
+			// finds Real widths array
+			for(int j = 0; j < getHeight(); j++) {
+				int currWidth = 0;
+				for(int i = 0; i < getWidth(); i++) {
+					if(grid[i][j]) {
+						currWidth++;
+					}
+				}
+				realWidths[j] = currWidth;
+			}
+			
+			// gets realMaxHeigt
+			for(int i = 0; i < width; i++) {
+				realMaxHeight = Math.max(realMaxHeight, realHeights[i]);
+			}
+			
+			if(realMaxHeight != getMaxHeight()) {
+				throw new RuntimeException("getMaxHeight is incorrect");
+			} else if(!Arrays.equals(widths, realWidths)) {
+				throw new RuntimeException("widths array is incorrect");
+			} else if(!Arrays.equals(heights, realHeights)) {
+				throw new RuntimeException("heights array is incorrect");
+			}
+ 		}
 	}
 	
 	/**
@@ -97,7 +135,13 @@ public class Board	{
 	 to compute this fast -- O(skirt length).
 	*/
 	public int dropHeight(Piece piece, int x) {
-		return 0; // YOUR CODE HERE
+		int result = 0;
+		int [] skirt = piece.getSkirt();
+		for(int i = 0; i < skirt.length; i++) {
+			result = Math.max(result, heights[x + i] - skirt[i]);
+		}
+		
+		return result; 
 	}
 	
 	
