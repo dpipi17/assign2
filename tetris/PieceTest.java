@@ -31,7 +31,6 @@ public class PieceTest {
 		pyr2 = pyr1.computeNextRotation();
 		pyr3 = pyr2.computeNextRotation();
 		pyr4 = pyr3.computeNextRotation();
-		pyr4.computeNextRotation();
 		
 		st1 = new Piece(Piece.STICK_STR);
 		st2 = st1.computeNextRotation();
@@ -41,21 +40,17 @@ public class PieceTest {
 		l1_2 = l1_1.computeNextRotation();
 		l1_3 = l1_2.computeNextRotation();
 		l1_4 = l1_3.computeNextRotation();
-		l1_4.computeNextRotation();
 		
 		l2_1 = new Piece(Piece.L2_STR);
 		l2_2 = l2_1.computeNextRotation();
 		l2_3 = l2_2.computeNextRotation();
 		l2_4 = l2_3.computeNextRotation();
-		l2_4.computeNextRotation();
 		
 		s1_1 = new Piece(Piece.S1_STR);
 		s1_2 = s1_1.computeNextRotation();
-		s1_2.computeNextRotation();
 		
 		s2_1 = new Piece(Piece.S2_STR);
 		s2_2 = s2_1.computeNextRotation();
-		s2_2.computeNextRotation();
 		
 		sq = new Piece(Piece.SQUARE_STR);
 	}
@@ -146,6 +141,12 @@ public class PieceTest {
 		
 	}
 	
+	/*@Test(expected = RuntimeException.class)
+	public void testError() {
+		Piece err = new Piece("q w 0 1");
+	} */
+	
+	
 	
 	// Test the skirt returned by a few pieces
 	@Test
@@ -187,46 +188,202 @@ public class PieceTest {
 	@Test
 	public void testEqual1() {
 		// pyramid tests
-		assertTrue(pyr1.equals(new Piece("0 0  1 0  1 1  2 0")));
-		assertTrue(pyr1.equals(new Piece("0 0  1 0  2 0  1 1")));
-		assertTrue(pyr1.equals(new Piece("0 0  2 0  1 1  1 0")));
-		assertTrue(pyr1.equals(new Piece("0 0  2 0  1 0  1 1")));
-		assertTrue(pyr1.equals(new Piece("0 0  1 1  1 0  2 0")));
-		assertTrue(pyr1.equals(new Piece("0 0  1 1  2 0  1 0")));
+		assertEquals(true, pyr1.equals(pyr1));
+		assertEquals(true, pyr1.equals(new Piece("0 0  1 0  1 1  2 0")));
+		assertEquals(true, pyr1.equals(new Piece("0 0  1 0  2 0  1 1")));
+		assertEquals(true, pyr1.equals(new Piece("0 0  2 0  1 1  1 0")));
+		assertEquals(true, pyr1.equals(new Piece("0 0  2 0  1 0  1 1")));
+		assertEquals(true, pyr1.equals(new Piece("0 0  1 1  1 0  2 0")));
+		assertEquals(true, pyr1.equals(new Piece("0 0  1 1  2 0  1 0")));
 		
 		
-		assertTrue(pyr1.equals(new Piece("1 0  1 1  2 0  0 0")));
-		assertTrue(pyr1.equals(new Piece("1 0  1 1  0 0  2 0")));
-		assertTrue(pyr1.equals(new Piece("1 1  0 0  2 0  1 0")));
-		assertTrue(pyr1.equals(new Piece("2 0  0 0  1 1  1 0")));
-		assertTrue(pyr1.equals(new Piece("1 1  2 0  0 0  1 0")));
-		assertTrue(pyr1.equals(new Piece("2 0  0 0  1 0  1 1")));
+		assertEquals(true, pyr1.equals(new Piece("1 0  1 1  2 0  0 0")));
+		assertEquals(true, pyr1.equals(new Piece("1 0  1 1  0 0  2 0")));
+		assertEquals(true, pyr1.equals(new Piece("1 1  0 0  2 0  1 0")));
+		assertEquals(true, pyr1.equals(new Piece("2 0  0 0  1 1  1 0")));
+		assertEquals(true, pyr1.equals(new Piece("1 1  2 0  0 0  1 0")));
+		assertEquals(true, pyr1.equals(new Piece("2 0  0 0  1 0  1 1")));
+		
+		assertEquals(false, pyr1.equals(3));
+		assertEquals(false, pyr1.equals(new Piece("0 0  1 0  2 0  1 1  1 1")));
+		assertEquals(false, pyr1.equals(new Piece("0 0  4 0  1 1  2 0")));
+		assertEquals(false, pyr1.equals(new Piece("0 0  2 0  1 1  0 1")));
+		assertEquals(false, pyr1.equals(new Piece("0 0  0 2  1 0  1 1")));
+		assertEquals(false,pyr1.equals(new Piece("0 0  0 0  1 0  1 1")));
 	}
 	
 	@Test
 	public void testEqual2() {
-		// pyramid tests
-		assertTrue(!(pyr1.equals(new Piece("0 0  4 0  1 1  2 0"))));
-		assertTrue(!pyr1.equals(new Piece("0 0  1 0  2 0  1 1  1 1")));
-		assertTrue(!pyr1.equals(new Piece("0 0  2 0  1 1  0 1")));
-		assertTrue(!pyr1.equals(new Piece("0 0  0 2  1 0  1 1")));
-		assertTrue(!pyr1.equals(3));
+		// square tests
+		assertEquals(true, sq.equals(new Piece("0 0  0 1  1 0  1 1")));
+		assertEquals(true, sq.equals(new Piece("0 1  0 0  1 0  1 1")));
+		assertEquals(true, sq.equals(new Piece("1 0  0 1  0 0  1 1")));
+		assertEquals(true, sq.equals(new Piece("1 1  0 1  1 0  0 0")));
 		
+		assertEquals(false, sq.equals(new Piece("0 0  0 0  1 0  1 1")));
+		assertEquals(false, sq.equals(new Piece("0 1  0 0  0 1  1 1")));
+		assertEquals(false, sq.equals(new Piece("1 0  0 1  0 0  1 2")));
+		assertEquals(false, sq.equals(new Piece("1 1  0 1  1 0  0 0  0 1")));		
+	}
+	
+	@Test
+	public void testEqual3() {
+		// s1 tests
+		assertEquals(true, s1_1.equals(new Piece("0 0	1 0	 1 1  2 1")));
+		assertEquals(true, s1_1.equals(new Piece("1 1	1 0	 0 0  2 1")));
+		assertEquals(true, s1_1.equals(new Piece("2 1	1 0	 1 1  0 0")));
+		assertEquals(true, s1_1.equals(new Piece("1 1	0 0	 1 0  2 1")));
+		
+		assertEquals(false, s1_1.equals(new Piece("0 0  0 0  1 0  1 1")));
+		assertEquals(false, s1_1.equals(new Piece("1 0  2 1  1 0  1 1  3 1")));
+		assertEquals(false, s1_1.equals(new Piece("2 1  3 1  1 0  1 1")));
+		assertEquals(false, s1_1.equals(new Piece("0 0	1 0	 1 0  2 1")));
+		
+		// s2 tests
+		assertEquals(true, s2_1.equals(new Piece("0 1	1 1  1 0  2 0")));
+		assertEquals(true, s2_1.equals(new Piece("1 1	0 1  1 0  2 0")));
+		assertEquals(true, s2_1.equals(new Piece("2 0	1 1  1 0  0 1")));
+		assertEquals(true, s2_1.equals(new Piece("0 1	1 0  1 1  2 0")));
+		
+		assertEquals(false, s2_1.equals(new Piece("0 1	1 1  1 0  2 0  1 1")));
+		assertEquals(false, s2_1.equals(new Piece("0 1  1 1  1 1  2 1")));
+		assertEquals(false, s2_1.equals(new Piece("0 1  1 0  2 0  2 1")));
+		assertEquals(false, s2_1.equals(new Piece("0 1	1 1  1 0")));
+					
+	}
+	
+	@Test
+	public void testEqual4() {
+		// L1 tests
+		assertEquals(true, l1_1.equals(new Piece("0 0	0 1	 0 2  1 0")));
+		assertEquals(true, l1_1.equals(new Piece("0 2	0 1	 0 0  1 0")));
+		assertEquals(true, l1_1.equals(new Piece("0 1	0 0	 1 0  0 2")));
+		assertEquals(true, l1_1.equals(new Piece("0 0	0 2	 0 1  1 0")));
+		
+		assertEquals(false, l1_1.equals(new Piece("0 0	0 1	 0 2  1 0  0 1")));
+		assertEquals(false, l1_1.equals(new Piece("0 0	0 1	 0 2")));
+		assertEquals(false, l1_1.equals(new Piece("0 0	0 1	 0 1  1 0")));
+		assertEquals(false, l1_1.equals(new Piece("0 0	0 1	 0 2  1 0  0 0  0 2")));
+		
+		// L2 tests
+		assertEquals(true, l2_1.equals(new Piece("0 0	1 1 1 0	 1 2")));
+		assertEquals(true, l2_1.equals(new Piece("1 0	0 0 1 2	 1 1")));
+		assertEquals(true, l2_1.equals(new Piece("0 0	1 2 1 1	 1 0")));
+		assertEquals(true, l2_1.equals(new Piece("1 1	0 0 1 0	 1 2")));
+		
+		assertEquals(false, l2_1.equals(new Piece("0 0	1 1 1 0	 1 2  1 1")));
+		assertEquals(false, l2_1.equals(new Piece("0 0	1 1 0 0	 1 2")));
+		assertEquals(false, l2_1.equals(new Piece("0 1	1 1  1 0")));
+		assertEquals(false, l2_1.equals(new Piece("0 0	1 0 1 0	 1 2")));				
+	}
+	
+	@Test
+	public void testEqual5() {
+		// stick tests
+		assertEquals(true, st1.equals(new Piece("0 0	0 1	 0 2  0 3")));
+		assertEquals(true, st1.equals(new Piece("0 1	0 0	 0 2  0 3")));
+		assertEquals(true, st1.equals(new Piece("0 2	0 3	 0 0  0 1")));
+		assertEquals(true, st1.equals(new Piece("0 3	0 2	 0 1  0 0")));
+		
+		assertEquals(false, st1.equals(new Piece("0 0	0 1	 0 2  0 3  0 1")));
+		assertEquals(false, st1.equals(new Piece("0 0	0 1	 0 2")));
+		assertEquals(false, st1.equals(new Piece("0 0	0 0	 0 2  0 3")));
+		assertEquals(false, st1.equals(new Piece("0 4	0 1	 0 2  0 3")));
+		
+	}
+	
+	@Test
+	public void fastRotation1() {
+		// pyramid Tests
+		Piece[] pieces = Piece.getPieces();
+		Piece pyr1 = pieces[Piece.PYRAMID];
+		Piece pyr2, pyr3, pyr4;
+			
+		assertTrue(pyr1.computeNextRotation().equals(pyr1.fastRotation()));
+		pyr2 = pyr1.fastRotation();
+		
+		assertTrue(pyr2.computeNextRotation().equals(pyr2.fastRotation()));
+		pyr3 = pyr2.fastRotation();
+		
+		assertTrue(pyr3.computeNextRotation().equals(pyr3.fastRotation()));
+		pyr4 = pyr3.fastRotation();
+		
+		assertTrue(pyr4.computeNextRotation().equals(pyr4.fastRotation()));		
+	}
+	
+	@Test
+	public void fastRotation2() {
+		// square Tests
+		Piece[] pieces = Piece.getPieces();
+		Piece sq = pieces[Piece.SQUARE];
+		
+		assertTrue(sq.computeNextRotation().equals(sq.fastRotation()));
+		sq = sq.fastRotation();
+		assertTrue(sq.computeNextRotation().equals(sq.fastRotation()));
 	}
 	
 	
 	@Test
-	public void fastRotation1() {
-		// pyramid tests
-		assertTrue(pyr2.equals(pyr1.fastRotation()));
-		assertTrue(pyr3.equals(pyr2.fastRotation()));
-		assertTrue(pyr4.equals(pyr3.fastRotation()));
-		assertTrue(pyr1.equals(pyr4.fastRotation()));
+	public void fastRotation3() {
+		Piece[] pieces = Piece.getPieces();
 		
-		assertTrue(st1.equals(st2.fastRotation()));
-		assertTrue(st2.equals(st1.fastRotation()));
+		// s 1 Tests
+		Piece s1_1 = pieces[Piece.S1];
+		Piece s1_2;
+		assertTrue(s1_1.computeNextRotation().equals(s1_1.fastRotation()));
+		s1_2 = s1_1.fastRotation();
+		assertTrue(s1_1.equals(s1_2.fastRotation()));
+		
+		// s 2 Tests
+		Piece s2_1 = pieces[Piece.S2];
+		Piece s2_2;
+		
+		assertTrue(s2_1.computeNextRotation().equals(s2_1.fastRotation()));
+		s2_2 = s2_1.fastRotation();
+		assertTrue(s2_1.equals(s2_2.fastRotation()));
 	}
 	
+	@Test
+	public void fastRotation4() {
+		Piece[] pieces = Piece.getPieces();
+		
+		// L 1 Tests
+		Piece l1_1 = pieces[Piece.L1];
+		Piece l1_2, l1_3, l1_4;
+		
+		assertTrue(l1_1.computeNextRotation().equals(l1_1.fastRotation()));
+		l1_2 = l1_1.fastRotation();
+		assertTrue(l1_2.computeNextRotation().equals(l1_2.fastRotation()));
+		l1_3 = l1_2.fastRotation();
+		assertTrue(l1_3.computeNextRotation().equals(l1_3.fastRotation()));
+		l1_4 = l1_3.fastRotation();
+		assertTrue(l1_1.equals(l1_4.fastRotation()));
+		
+		// L 2 Tests
+		Piece l2_1 = pieces[Piece.L2];
+		Piece l2_2, l2_3, l2_4;
+		
+		assertTrue(l2_1.computeNextRotation().equals(l2_1.fastRotation()));
+		l2_2 = l2_1.fastRotation();
+		assertTrue(l2_2.computeNextRotation().equals(l2_2.fastRotation()));
+		l2_3 = l2_2.fastRotation();
+		assertTrue(l2_3.computeNextRotation().equals(l2_3.fastRotation()));
+		l2_4 = l2_3.fastRotation();
+		assertTrue(l2_1.equals(l2_4.fastRotation()));
+	}
+	
+	
+	@Test
+	public void fastRotation5() {
+		// stick Tests
+		Piece[] pieces = Piece.getPieces();
+		Piece st1 = pieces[Piece.STICK];
+		Piece st2;
+		
+		assertTrue(st1.computeNextRotation().equals(st1.fastRotation()));
+		st2 = st1.fastRotation();
+		assertTrue(st1.equals(st2.fastRotation()));	
+	}
 	
 	
 }

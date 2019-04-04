@@ -127,7 +127,6 @@ public class Piece {
 		
 		TPoint[] array = newPts.toArray(new TPoint[0]);
 		Piece next = new Piece(array);
-		this.next = next;
 		
 		return next;
 	}
@@ -168,6 +167,12 @@ public class Piece {
 			boolean found = false;
 			TPoint currPt = otherBody[i];
 			
+			// if otherBody has duplicate points
+			for(int j = i + 1; j < otherBody.length; j++) {
+				if(otherBody[j].equals(currPt)) return false;	
+			}
+			
+			// guesses if we can find current Point in body array
 			for(int j = 0; j < body.length; j++) {
 				if(body[j].equals(currPt)) {
 					found = true;
@@ -243,13 +248,19 @@ public class Piece {
 	 to the first piece.
 	*/
 	private static Piece makeFastRotations(Piece root) {
-		Piece currPc = new Piece(root.getBody());
-		while(!root.equals(currPc.computeNextRotation())) {
-			currPc = currPc.fastRotation();
+		Piece currPc = root.computeNextRotation();
+		if(currPc.equals(root)) {
+			root.next = root;
+		} else {
+			root.next = currPc;			
 		}
-		currPc = currPc.fastRotation();
 		
-		return currPc; 
+		while(!root.equals(currPc)) {
+			currPc.next = currPc.computeNextRotation();
+			currPc = currPc.next;
+		}
+		
+		return root; 
 	}
 	
 	
