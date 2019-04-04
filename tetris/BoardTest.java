@@ -82,6 +82,7 @@ public class BoardTest {
 	// place, clearRows, undo, place ... checking a few col/row/max
 	// numbers that the board looks right after the operations.
 
+	
 	// Place sRotated into the board, then check some measures
 	@Test
 	public void testSample3() {

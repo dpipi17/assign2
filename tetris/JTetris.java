@@ -350,7 +350,6 @@ public class JTetris extends JComponent {
 	 i.e. the piece should not be in the board at the moment.
 	 This is necessary so dropHeight() may be called without
 	 the piece "hitting itself" on the way down.
-
 	 Sets the ivars newX, newY, and newPiece to hold
 	 what it thinks the new piece position should be.
 	 (Storing an intermediate result like that in
@@ -410,7 +409,6 @@ public class JTetris extends JComponent {
 	 LEFT RIGHT ROTATE DROP for the user moves,
 	 and the timer calls it with the verb DOWN to move
 	 the piece down one square.
-
 	 Before this is called, the piece is at some location in the board.
 	 This advances the piece to be at its next location.
 	 
@@ -728,4 +726,3 @@ public class JTetris extends JComponent {
 		frame.setVisible(true);
 	}
 }
-
