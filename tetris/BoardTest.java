@@ -77,6 +77,7 @@ public class BoardTest {
 		assertEquals(3, b.getColumnHeight(2));
 		assertEquals(4, b.getMaxHeight());
 	}
+	
 
 	// Make more tests, by putting together longer series of
 	// place, clearRows, undo, place ... checking a few col/row/max
@@ -170,12 +171,12 @@ public class BoardTest {
 	@Test
 	public void testClearRows3() {
 		Board b = new Board(7, 10);
-
 		b.place(l1_2, 0, 0);
 		b.commit();
 		b.place(st2, 3, 0);
 		b.commit();
 		b.place(sq, 0, 1);
+		
 		b.commit();
 		b.place(st1, 0, 3);
 		b.commit();
